@@ -5,7 +5,7 @@
   "bin": "./bin/honey-log",
   "scripts": {
     "test": "mocha --compilers js:babel-register",
-    "run-babel": "babel-node ./bin/honey-log"
+    "babel": "babel-node ./index.js"
   },
   "keywords": [
     "log"
@@ -13,19 +13,27 @@
   "author": "Lian Hsueh <xuedudu@gmail.com>",
   "license": "ISC",
   "devDependencies": {
-    "mocha": "^3.1.2",
     "babel-cli": "^6.18.0",
+    "babel-plugin-syntax-async-functions": "^6.13.0",
+    "babel-plugin-transform-async-to-generator": "^6.16.0",
     "babel-preset-latest": "^6.16.0",
-    "babel-register": "^6.18.0"
+    "babel-register": "^6.18.0",
+    "mocha": "^3.1.2"
   },
   "babel": {
-    "presets": ["latest"]
+    "presets": [
+      "latest"
+    ],
+    "plugins": [
+      "transform-async-to-generator",
+      "syntax-async-functions"
+    ]
   },
   "logs": {
     "projectA": "./test/testA.log",
     "projectB": {
-        "path": "./test/testB.log",
-        "patten": "^honey-loggly"
+      "path": "./test/testB.log",
+      "patten": "^honey-loggly"
     }
   },
   "server": {

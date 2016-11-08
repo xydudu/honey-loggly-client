@@ -31,7 +31,6 @@ describe('honey-log client', () => {
 
         setTimeout(() => {
             watcher.close()        
-            delete watcher
             done()
         }, 4500)
 

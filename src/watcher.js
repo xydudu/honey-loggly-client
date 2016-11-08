@@ -72,7 +72,7 @@ export default class {
     }
 
     run() {
-        this.connection = await this._connect()
+        this.connection = this._connect()
         this.log_streams.forEach(_item => {
             _item.streams.on('line', _data => {
                 console.log(`${_item.app_name}: ${_data}`)
