@@ -1,7 +1,9 @@
 
 import fs from 'fs'
 import net from 'net'
-import { logs, server  } from '../package.json'
+
+import 'babel-polyfill'
+import { logs, server  } from '~/package.json'
 import { Tail} from 'tail'
 
 export default class {

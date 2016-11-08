@@ -1,6 +1,6 @@
 import assert from 'assert'
 import fs from 'fs'
-import Watcher from '../index.js'
+import Watcher from '~/src/watcher.js'
 
 describe('honey-log client', () => {
 

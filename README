@@ -1,0 +1,5 @@
+# honey-loggly-client
+
+- npm test 测试
+- npm run build 编译
+- npm run server 启动服务

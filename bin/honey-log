@@ -1,4 +1,15 @@
-import Watcher from '../index.js'
-const conf = './.conf'
-const watcher = new Watcher(conf)
-watcher.run()
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _watcher = require('./src/watcher.js');
+
+var _watcher2 = _interopRequireDefault(_watcher);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var watcher = new _watcher2.default();
+watcher.run();
+exports.default = _watcher2.default;
