@@ -1,0 +1,4 @@
+import Watcher from '../index.js'
+const conf = './.conf'
+const watcher = new Watcher(conf)
+watcher.run()

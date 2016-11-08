@@ -1,0 +1,35 @@
+{
+  "name": "honey-loggly-client",
+  "version": "1.0.0",
+  "description": "a client of honey log service",
+  "bin": "./bin/honey-log",
+  "scripts": {
+    "test": "mocha --compilers js:babel-register",
+    "run-babel": "babel-node ./bin/honey-log"
+  },
+  "keywords": [
+    "log"
+  ],
+  "author": "Lian Hsueh <xuedudu@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^3.1.2",
+    "babel-cli": "^6.18.0",
+    "babel-preset-latest": "^6.16.0",
+    "babel-register": "^6.18.0"
+  },
+  "babel": {
+    "presets": ["latest"]
+  },
+  "logs": {
+    "projectA": "./test/testA.log",
+    "projectB": {
+        "path": "./test/testB.log",
+        "patten": "^honey-loggly"
+    }
+  },
+  "server": {
+    "port": "8124",
+    "host": "0.0.0.0"
+  }
+}
