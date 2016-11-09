@@ -71,8 +71,10 @@ export default class {
         return conn
     }
 
-    _send() {
-         
+    _send(_msg) {
+        this.connection.then(_conn => {
+            _conn.write(_msg)
+        })
     }
 
     _isTheLog(_pattern, _data) {
@@ -88,7 +90,9 @@ export default class {
         _.log_streams.forEach(_item => {
             _item.streams.on('line', _data => {
                 if (_._isTheLog(_item.pattern, _data)) {
-                    console.log(`${_item.app_name}: ${_data}`)
+                    let msg = `${_item.app_name}: ${_data}`
+                    //console.log(msg)
+                    _._send(msg)
                 }
             }) 
             _item.streams.on('error', _err => {
