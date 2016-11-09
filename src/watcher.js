@@ -58,6 +58,7 @@ export default class {
             if (_.reconnect_times > 10) {
                 console.error('日志接收服务器可能死了！')
                 conn.destroy()
+                return false
             }
             setTimeout(() => {
                 console.log('reconnect server ...') 
@@ -65,6 +66,7 @@ export default class {
                 _.reconnect_times ++
             }, 2000)
         })
+        console.log(`连接服务器：${server.host}:${server.port}`)
         await conn.connect(server.port, server.host, () => {
             console.log('日志接收服务器连接成功！')    
         })

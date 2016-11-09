@@ -26,6 +26,8 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var DEFAULT_LOG_PATTEN = 'honey-loggly';
+
 var _class = function () {
     function _class(_conf) {
         _classCallCheck(this, _class);
@@ -64,6 +66,7 @@ var _class = function () {
                                     if (_.reconnect_times > 10) {
                                         console.error('日志接收服务器可能死了！');
                                         conn.destroy();
+                                        return false;
                                     }
                                     setTimeout(function () {
                                         console.log('reconnect server ...');
@@ -95,14 +98,31 @@ var _class = function () {
         }()
     }, {
         key: '_send',
-        value: function _send() {}
+        value: function _send(_msg) {
+            this.connection.then(function (_conn) {
+                _conn.write(_msg);
+            });
+        }
+    }, {
+        key: '_isTheLog',
+        value: function _isTheLog(_pattern, _data) {
+            if (_pattern === 'all') return true;
+            var escape = ('[' + _pattern + ']').replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+            var re = new RegExp('^' + escape);
+            return re.test(_data);
+        }
     }, {
         key: 'run',
         value: function run() {
-            this.connection = this._connect();
-            this.log_streams.forEach(function (_item) {
+            var _ = this;
+            _.connection = this._connect();
+            _.log_streams.forEach(function (_item) {
                 _item.streams.on('line', function (_data) {
-                    console.log(_item.app_name + ': ' + _data);
+                    if (_._isTheLog(_item.pattern, _data)) {
+                        var msg = _item.app_name + ': ' + _data;
+                        //console.log(msg)
+                        _._send(msg);
+                    }
                 });
                 _item.streams.on('error', function (_err) {
                     console.warn('[failed] ' + _item.app_name + ': ' + _data);
@@ -129,7 +149,7 @@ var _class = function () {
                 var item = { app_name: _key };
                 if (typeof _package.logs[_key] === 'string') {
                     item.path = _package.logs[_key];
-                    item.patten = false;
+                    item.pattern = DEFAULT_LOG_PATTEN;
                 } else {
                     item = Object.assign(item, _package.logs[_key]);
                 }

@@ -1,6 +1,15 @@
 # honey-loggly-client
 
+## before
+
+1. 检查服务器是否可以连接
+
+```
+telnet [server host] [server port]
+```
+
 - npm install 
 - npm test 测试
 - npm run build 编译
+- 修改 /bin/package.json 的 server 字段为目标服务器信息
 - npm run server 启动服务
