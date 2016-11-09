@@ -20,17 +20,19 @@ describe('honey-log client', () => {
             fs.appendFileSync('./test/testA.log', 'Hello honey-loggly \n', 'utf8') 
         }, 1000)
         setTimeout(() => {
-            fs.appendFileSync('./test/testB.log', 'Hello honey-loggly To B \n', 'utf8') 
+            fs.appendFileSync('./test/testB.log', 'all Hello honey-loggly To B \n', 'utf8') 
         }, 2000)
         setTimeout(() => {
-            fs.appendFileSync('./test/testA.log', 'Hello honey-loggly To A \n', 'utf8') 
+            fs.appendFileSync('./test/testA.log', '[honey-loggly] Hello honey-loggly To A \n', 'utf8') 
         }, 3000)
         setTimeout(() => {
-            fs.appendFileSync('./test/testB.log', 'Hello honey-loggly To B \n', 'utf8') 
+            fs.appendFileSync('./test/testB.log', 'all Hello honey-loggly To B \n', 'utf8') 
         }, 4000)
 
         setTimeout(() => {
             watcher.close()        
+            fs.writeFileSync('./test/testB.log', 'Hello honey-loggly To B \n', 'utf8') 
+            fs.writeFileSync('./test/testA.log', 'Hello honey-loggly To A \n', 'utf8') 
             done()
         }, 4500)
 

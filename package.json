@@ -38,7 +38,7 @@
     "projectA": "./test/testA.log",
     "projectB": {
       "path": "./test/testB.log",
-      "patten": "^honey-loggly"
+      "pattern": "all"
     }
   },
   "server": {

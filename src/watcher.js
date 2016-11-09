@@ -6,6 +6,8 @@ import 'babel-polyfill'
 import { logs, server  } from '~/package.json'
 import { Tail} from 'tail'
 
+const DEFAULT_LOG_PATTEN = 'honey-loggly'
+
 export default class {
     constructor(_conf) {
         this.app_logs = this.constructor.getConfig()
@@ -32,7 +34,7 @@ export default class {
             let item = {app_name: _key}
             if (typeof logs[_key] === 'string') {
                 item.path = logs[_key] 
-                item.patten = false
+                item.pattern = DEFAULT_LOG_PATTEN
             } else {
                 item = Object.assign(item, logs[_key])
             }
@@ -73,11 +75,21 @@ export default class {
          
     }
 
+    _isTheLog(_pattern, _data) {
+        if (_pattern === 'all') return true
+        let escape = `[${_pattern}]`.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
+        let re = new RegExp(`^${escape}`)
+        return re.test(_data)
+    }
+
     run() {
-        this.connection = this._connect()
-        this.log_streams.forEach(_item => {
+        let _ = this
+        _.connection = this._connect()
+        _.log_streams.forEach(_item => {
             _item.streams.on('line', _data => {
-                console.log(`${_item.app_name}: ${_data}`)
+                if (_._isTheLog(_item.pattern, _data)) {
+                    console.log(`${_item.app_name}: ${_data}`)
+                }
             }) 
             _item.streams.on('error', _err => {
                 console.warn(`[failed] ${_item.app_name}: ${_data}`)
