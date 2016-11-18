@@ -60,9 +60,9 @@ export default class {
                 conn.destroy()
                 return false
             }
-            setTimeout(() => {
+            setTimeout(async () => {
                 console.log('reconnect server ...') 
-                _._connect()
+                _.connection = await _._connect()
                 _.reconnect_times ++
             }, 2000)
         })
@@ -74,13 +74,14 @@ export default class {
     }
 
     _send(_msg) {
-        this.connection.then(_conn => {
-            _conn.write(_msg)
-        })
+        this.connection.write(_msg)
+        //this.connection.then(_conn => {
+        //    _conn.write(_msg)
+        //})
     }
 
     _isTheLog(_pattern, _data) {
-        if (_pattern === 'all') return true
+        if (_pattern === 'all') return _data
         let escape = `[${_pattern}]`.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
         let re = new RegExp(`^${escape}`)
         if (re.test(_data)) {
@@ -89,9 +90,9 @@ export default class {
 
     }
 
-    run() {
+    async run() {
         let _ = this
-        _.connection = this._connect()
+        _.connection = await this._connect()
         _.log_streams.forEach(_item => {
             _item.streams.on('line', _data => {
                 let msg = _._isTheLog(_item.pattern, _data)

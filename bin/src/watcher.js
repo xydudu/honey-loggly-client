@@ -51,12 +51,14 @@ var _class = function () {
     _createClass(_class, [{
         key: '_connect',
         value: function () {
-            var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+            var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
+                var _this = this;
+
                 var _, conn;
 
-                return regeneratorRuntime.wrap(function _callee$(_context) {
+                return regeneratorRuntime.wrap(function _callee2$(_context2) {
                     while (1) {
-                        switch (_context.prev = _context.next) {
+                        switch (_context2.prev = _context2.next) {
                             case 0:
                                 _ = this;
                                 conn = new _net2.default.Socket();
@@ -68,27 +70,43 @@ var _class = function () {
                                         conn.destroy();
                                         return false;
                                     }
-                                    setTimeout(function () {
-                                        console.log('reconnect server ...');
-                                        _._connect();
-                                        _.reconnect_times++;
-                                    }, 2000);
+                                    setTimeout(_asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+                                        return regeneratorRuntime.wrap(function _callee$(_context) {
+                                            while (1) {
+                                                switch (_context.prev = _context.next) {
+                                                    case 0:
+                                                        console.log('reconnect server ...');
+                                                        _context.next = 3;
+                                                        return _._connect();
+
+                                                    case 3:
+                                                        _.connection = _context.sent;
+
+                                                        _.reconnect_times++;
+
+                                                    case 5:
+                                                    case 'end':
+                                                        return _context.stop();
+                                                }
+                                            }
+                                        }, _callee, _this);
+                                    })), 2000);
                                 });
                                 console.log('\u8FDE\u63A5\u670D\u52A1\u5668\uFF1A' + _package.server.host + ':' + _package.server.port);
-                                _context.next = 6;
+                                _context2.next = 6;
                                 return conn.connect(_package.server.port, _package.server.host, function () {
                                     console.log('日志接收服务器连接成功！');
                                 });
 
                             case 6:
-                                return _context.abrupt('return', conn);
+                                return _context2.abrupt('return', conn);
 
                             case 7:
                             case 'end':
-                                return _context.stop();
+                                return _context2.stop();
                         }
                     }
-                }, _callee, this);
+                }, _callee2, this);
             }));
 
             function _connect() {
@@ -100,14 +118,15 @@ var _class = function () {
     }, {
         key: '_send',
         value: function _send(_msg) {
-            this.connection.then(function (_conn) {
-                _conn.write(_msg);
-            });
+            this.connection.write(_msg);
+            //this.connection.then(_conn => {
+            //    _conn.write(_msg)
+            //})
         }
     }, {
         key: '_isTheLog',
         value: function _isTheLog(_pattern, _data) {
-            if (_pattern === 'all') return true;
+            if (_pattern === 'all') return _data;
             var escape = ('[' + _pattern + ']').replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
             var re = new RegExp('^' + escape);
             if (re.test(_data)) {
@@ -116,26 +135,52 @@ var _class = function () {
         }
     }, {
         key: 'run',
-        value: function run() {
-            var _ = this;
-            _.connection = this._connect();
-            _.log_streams.forEach(function (_item) {
-                _item.streams.on('line', function (_data) {
-                    var msg = _._isTheLog(_item.pattern, _data);
-                    if (msg) _._send(msg);
-                    //if (msg) {
-                    //    //let msg = `${_item.app_name}: ${_data}`
-                    //    let msg = _data
-                    //    //console.log(msg)
-                    //    _._send(msg)
-                    //}
-                });
-                _item.streams.on('error', function (_err) {
-                    console.warn('[failed] ' + _item.app_name + ': ' + _data);
-                    console.warn('[failed detail] ' + _item.app_name + ': ' + _err);
-                });
-            });
-        }
+        value: function () {
+            var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3() {
+                var _;
+
+                return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                    while (1) {
+                        switch (_context3.prev = _context3.next) {
+                            case 0:
+                                _ = this;
+                                _context3.next = 3;
+                                return this._connect();
+
+                            case 3:
+                                _.connection = _context3.sent;
+
+                                _.log_streams.forEach(function (_item) {
+                                    _item.streams.on('line', function (_data) {
+                                        var msg = _._isTheLog(_item.pattern, _data);
+                                        if (msg) _._send(msg);
+                                        //if (msg) {
+                                        //    //let msg = `${_item.app_name}: ${_data}`
+                                        //    let msg = _data
+                                        //    //console.log(msg)
+                                        //    _._send(msg)
+                                        //}
+                                    });
+                                    _item.streams.on('error', function (_err) {
+                                        console.warn('[failed] ' + _item.app_name + ': ' + _data);
+                                        console.warn('[failed detail] ' + _item.app_name + ': ' + _err);
+                                    });
+                                });
+
+                            case 5:
+                            case 'end':
+                                return _context3.stop();
+                        }
+                    }
+                }, _callee3, this);
+            }));
+
+            function run() {
+                return _ref3.apply(this, arguments);
+            }
+
+            return run;
+        }()
     }, {
         key: 'close',
         value: function close() {

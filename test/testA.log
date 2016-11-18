@@ -1,12 +1,6 @@
 Hello honey-loggly To A 
-[honey-loggly] [dollargan] honey-loggly To B [time_group:1111] [1234] 
-[honey-loggly] [dollargan] honey-loggly To B [time_group:1111] [1234] 
-[dollargan] honey-loggly To B [time_group:1111] [1234] 
-[honey-loggly] [dollargan2] honey-loggly To C [time_group:1111] [12345] 
-[honey-loggly] [dollargan2] honey-loggly To C [time_group:1111] [12345] 
-[honey-loggly] [dollargan2] honey-loggly To C [time_group:1111] [12345] 
-[honey-loggly] [dollargan2] honey-loggly To C [time_group:1111] [12345]
-[honey-loggly] [dollargan2] honey-loggly To C [time_group:1111] [12345]
-[honey-loggly] [dollargan2] honey-loggly To C [time_group:1111] [12345]
-[honey-loggly] [dollargan2] honey-loggly To C [time_group:1111] [123456]
-[honey-loggly] [dollargan2] honey-loggly To C [time_group:1111] [1234567]
+all hello
+[honey-loggly] [dollargan] aaa [time_group:12312] [23423423]
+[honey-loggly] [dollargan] aaa [time_group:12312] [23423423]
+[honey-loggly] [dollargan] aaa [time_group:12312] [23423423]
+[honey-loggly] [dollargan] aaa [time_group:12312] [23423423]
