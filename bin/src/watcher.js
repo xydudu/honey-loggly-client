@@ -110,7 +110,9 @@ var _class = function () {
             if (_pattern === 'all') return true;
             var escape = ('[' + _pattern + ']').replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
             var re = new RegExp('^' + escape);
-            return re.test(_data);
+            if (re.test(_data)) {
+                return _data.replace(re, '').replace(/^\s+?/, '');
+            } else return false;
         }
     }, {
         key: 'run',
@@ -119,12 +121,14 @@ var _class = function () {
             _.connection = this._connect();
             _.log_streams.forEach(function (_item) {
                 _item.streams.on('line', function (_data) {
-                    if (_._isTheLog(_item.pattern, _data)) {
-                        //let msg = `${_item.app_name}: ${_data}`
-                        var msg = _data;
-                        //console.log(msg)
-                        _._send(msg);
-                    }
+                    var msg = _._isTheLog(_item.pattern, _data);
+                    if (msg) _._send(msg);
+                    //if (msg) {
+                    //    //let msg = `${_item.app_name}: ${_data}`
+                    //    let msg = _data
+                    //    //console.log(msg)
+                    //    _._send(msg)
+                    //}
                 });
                 _item.streams.on('error', function (_err) {
                     console.warn('[failed] ' + _item.app_name + ': ' + _data);
