@@ -92,7 +92,8 @@ export default class {
         _.log_streams.forEach(_item => {
             _item.streams.on('line', _data => {
                 if (_._isTheLog(_item.pattern, _data)) {
-                    let msg = `${_item.app_name}: ${_data}`
+                    //let msg = `${_item.app_name}: ${_data}`
+                    let msg = _data
                     //console.log(msg)
                     _._send(msg)
                 }

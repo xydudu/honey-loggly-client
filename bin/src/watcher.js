@@ -74,15 +74,16 @@ var _class = function () {
                                         _.reconnect_times++;
                                     }, 2000);
                                 });
-                                _context.next = 5;
+                                console.log('\u8FDE\u63A5\u670D\u52A1\u5668\uFF1A' + _package.server.host + ':' + _package.server.port);
+                                _context.next = 6;
                                 return conn.connect(_package.server.port, _package.server.host, function () {
                                     console.log('日志接收服务器连接成功！');
                                 });
 
-                            case 5:
+                            case 6:
                                 return _context.abrupt('return', conn);
 
-                            case 6:
+                            case 7:
                             case 'end':
                                 return _context.stop();
                         }
@@ -119,7 +120,8 @@ var _class = function () {
             _.log_streams.forEach(function (_item) {
                 _item.streams.on('line', function (_data) {
                     if (_._isTheLog(_item.pattern, _data)) {
-                        var msg = _item.app_name + ': ' + _data;
+                        //let msg = `${_item.app_name}: ${_data}`
+                        var msg = _data;
                         //console.log(msg)
                         _._send(msg);
                     }
