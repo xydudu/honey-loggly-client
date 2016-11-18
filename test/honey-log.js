@@ -12,6 +12,18 @@ describe('honey-log client', () => {
         assert(configs[1].path)
     })
 
+    it('_isTheLog()', () => {
+        let watcher = new Watcher() 
+        let input1 = 'Hello honey-loggly'
+        let input2 = '[honey-loggly] Hello honey-loggly'
+
+        let result = watcher._isTheLog('honey-loggly', input1)
+        assert.equal(result, false)
+        let result2 = watcher._isTheLog('honey-loggly', input2)
+        assert.equal(result2, 'Hello honey-loggly')
+    
+    })
+
     it('run()', function(done) {
         this.timeout(5000)
         let watcher = new Watcher()

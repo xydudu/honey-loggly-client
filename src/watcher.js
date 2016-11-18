@@ -83,7 +83,10 @@ export default class {
         if (_pattern === 'all') return true
         let escape = `[${_pattern}]`.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&")
         let re = new RegExp(`^${escape}`)
-        return re.test(_data)
+        if (re.test(_data)) {
+            return _data.replace(re, '').replace(/^\s+?/, '') 
+        } else return false
+
     }
 
     run() {
@@ -91,12 +94,14 @@ export default class {
         _.connection = this._connect()
         _.log_streams.forEach(_item => {
             _item.streams.on('line', _data => {
-                if (_._isTheLog(_item.pattern, _data)) {
-                    //let msg = `${_item.app_name}: ${_data}`
-                    let msg = _data
-                    //console.log(msg)
-                    _._send(msg)
-                }
+                let msg = _._isTheLog(_item.pattern, _data)
+                if (msg) _._send(msg)
+                //if (msg) {
+                //    //let msg = `${_item.app_name}: ${_data}`
+                //    let msg = _data
+                //    //console.log(msg)
+                //    _._send(msg)
+                //}
             }) 
             _item.streams.on('error', _err => {
                 console.warn(`[failed] ${_item.app_name}: ${_data}`)
