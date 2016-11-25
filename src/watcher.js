@@ -49,26 +49,32 @@ export default class {
         })
         return logs_arr
     }
-
+    
     async _connect() {
         let _ = this
         let conn = new net.Socket
-        conn.on('error', err => {
+        
+        conn.on('error', _err => {
+            console.error(_err.code)
+        })
+        conn.on('close', ()=> {
             console.warn('日志接收服务器失联，2秒后重试...')
-            if (_.reconnect_times > 10) {
-                console.error('日志接收服务器可能死了！')
-                conn.destroy()
-                return false
-            }
             setTimeout(async () => {
-                console.log('reconnect server ...') 
-                _.connection = await _._connect()
-                _.reconnect_times ++
+                _.connection = await this._connect()
             }, 2000)
         })
+        //conn.on('drain', () => {
+        //    console.log('drain event')
+        //})
+        //conn.on('timeout', () => {
+        //    console.log('timeout event')
+        //})
+        //conn.on('end', () => {
+        //    console.log('end event')
+        //})
         console.log(`连接服务器：${server.host}:${server.port}`)
         await conn.connect(server.port, server.host, () => {
-            console.log('日志接收服务器连接成功！')    
+            console.log('日志接收服务器连接成功！')
         })
         return conn
     }

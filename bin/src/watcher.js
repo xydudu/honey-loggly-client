@@ -63,28 +63,24 @@ var _class = function () {
                                 _ = this;
                                 conn = new _net2.default.Socket();
 
-                                conn.on('error', function (err) {
+
+                                conn.on('error', function (_err) {
+                                    console.error(_err.code);
+                                });
+                                conn.on('close', function () {
                                     console.warn('日志接收服务器失联，2秒后重试...');
-                                    if (_.reconnect_times > 10) {
-                                        console.error('日志接收服务器可能死了！');
-                                        conn.destroy();
-                                        return false;
-                                    }
                                     setTimeout(_asyncToGenerator(regeneratorRuntime.mark(function _callee() {
                                         return regeneratorRuntime.wrap(function _callee$(_context) {
                                             while (1) {
                                                 switch (_context.prev = _context.next) {
                                                     case 0:
-                                                        console.log('reconnect server ...');
-                                                        _context.next = 3;
-                                                        return _._connect();
+                                                        _context.next = 2;
+                                                        return _this._connect();
 
-                                                    case 3:
+                                                    case 2:
                                                         _.connection = _context.sent;
 
-                                                        _.reconnect_times++;
-
-                                                    case 5:
+                                                    case 3:
                                                     case 'end':
                                                         return _context.stop();
                                                 }
@@ -92,16 +88,25 @@ var _class = function () {
                                         }, _callee, _this);
                                     })), 2000);
                                 });
+                                //conn.on('drain', () => {
+                                //    console.log('drain event')
+                                //})
+                                //conn.on('timeout', () => {
+                                //    console.log('timeout event')
+                                //})
+                                //conn.on('end', () => {
+                                //    console.log('end event')
+                                //})
                                 console.log('\u8FDE\u63A5\u670D\u52A1\u5668\uFF1A' + _package.server.host + ':' + _package.server.port);
-                                _context2.next = 6;
+                                _context2.next = 7;
                                 return conn.connect(_package.server.port, _package.server.host, function () {
                                     console.log('日志接收服务器连接成功！');
                                 });
 
-                            case 6:
+                            case 7:
                                 return _context2.abrupt('return', conn);
 
-                            case 7:
+                            case 8:
                             case 'end':
                                 return _context2.stop();
                         }
